@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NDKFilePatchTest.iml" filepath="$PROJECT_DIR$/NDKFilePatchTest.iml" />
+      <module fileurl="file://F:\VersionManager\WorkSpace\NDK\NDKFilePatchTest\NDKFilePatchTest.iml" filepath="F:\VersionManager\WorkSpace\NDK\NDKFilePatchTest\NDKFilePatchTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://F:\VersionManager\WorkSpace\NDK\NDKFilePatchTest\app\app.iml" filepath="F:\VersionManager\WorkSpace\NDK\NDKFilePatchTest\app\app.iml" />
     </modules>
   </component>
 </project>
