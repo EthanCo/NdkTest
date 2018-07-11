@@ -25,5 +25,5 @@ public class NDKFileUtils {
      * @param path
      * @param count
      */
-    public static native void patch(String path, int count);
+    public static native void patch(String path,String patternPath, int count);
 }

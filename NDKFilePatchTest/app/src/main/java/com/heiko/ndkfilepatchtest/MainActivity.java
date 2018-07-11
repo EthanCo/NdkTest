@@ -32,10 +32,21 @@ public class MainActivity extends AppCompatActivity {
         btnDiff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String path = SD_CARD_PATH + File.separatorChar+ "img.jpg";
-                String path_pattern = SD_CARD_PATH +File.separatorChar+ "img_%d.jpg";
+                String path = SD_CARD_PATH + File.separatorChar + "img.jpg";
+                String path_pattern = SD_CARD_PATH + File.separatorChar + "img_%d.jpg";
                 NDKFileUtils.diff(path, path_pattern, 3);
-                Log.d("jason", "拆分完毕..");
+                Log.d("Z-", "拆分完毕..");
+            }
+        });
+
+        Button btnPatch = findViewById(R.id.btn_patch);
+        btnPatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String path_pattern = SD_CARD_PATH + File.separatorChar + "img_%d.jpg";
+                String merge_path = SD_CARD_PATH + File.separatorChar + "img_merge.jpg";
+                NDKFileUtils.patch(path_pattern, merge_path, 3);
+                Log.d("Z-", "合并完毕..");
             }
         });
     }

@@ -32,8 +32,8 @@ Java_com_heiko_ndkfilepatchtest_NDKFileUtils_diff(JNIEnv *env, jobject jo, jstri
     const char *path_pattern = (*env)->GetStringUTFChars(env, path_pattern_jstr, NULL);
 
 
-    LOGI("Z-patch:%s",path);
-    LOGI("Z-path_pattern:%s",path_pattern);
+    LOGI("Z-diff-path:%s",path);
+    LOGI("Z-diff-path_pattern:%s",path_pattern);
     //得到分割之后子文件的路径列表
     char **patches = malloc(sizeof(char *) * file_num);
     for (int i = 0; i < file_num; ++i) {
@@ -42,7 +42,7 @@ Java_com_heiko_ndkfilepatchtest_NDKFileUtils_diff(JNIEnv *env, jobject jo, jstri
         //需要分隔的文件:C://jason/liuyan.png
         //子文件：C://jason/liuyan_%d.png
         sprintf(patches[i], path_pattern, (i + 1));
-        LOGI("Z-patch path:%s",patches[i]);
+        LOGI("Z-diff-patch path:%s",patches[i]);
     }
 
     //不断读取path文件，循环写入file_num个文件中
@@ -109,10 +109,48 @@ Java_com_heiko_ndkfilepatchtest_NDKFileUtils_diff(JNIEnv *env, jobject jo, jstri
 }
 
 JNIEXPORT void JNICALL
-Java_com_heiko_ndkfilepatchtest_NDKFileUtils_patch(JNIEnv *env, jclass type, jstring path_,
-                                                   jint file_num) {
-    const char *path = (*env)->GetStringUTFChars(env, path_, 0);
-    (*env)->ReleaseStringUTFChars(env, path_, path);
+Java_com_heiko_ndkfilepatchtest_NDKFileUtils_patch(JNIEnv *env, jclass jcls,jstring path_pattern_jstr,jstring merge_path_jstr, jint file_num) {
+    /*const char *path = (*env)->GetStringUTFChars(env, path_, 0);
+    (*env)->ReleaseStringUTFChars(env, path_, path);*/
+
+    //合并之后的文件路径
+    const char *merge_path = (*env)->GetStringUTFChars(env,merge_path_jstr,NULL);
+
+    //分割子文件
+    const char *path_pattern = (*env)->GetStringUTFChars(env,path_pattern_jstr,NULL);
+
+    LOGI("Z-patch-merge_path:%s",merge_path);
+    LOGI("Z-patch-path_pattern:%s",path_pattern);
+
+    //得到分割之后的子文件的路径列表
+    char **patches = malloc(sizeof(char*) * file_num);
+    for (int i = 0; i < file_num; ++i) {
+        //元素赋值
+        //需要分割的文件：C://jason/liuyan.png
+        //子文件：C://jason/liuyan_%d.png
+        sprintf(patches[i],path_pattern,(i+1));
+        LOGI("Z-patch path:%s",patches[i]);
+    }
+
+    FILE *fpw = fopen(merge_path,"wb");
+    for (int i = 0; i < file_num; ++i) {
+        //每个子文件的大小
+        int filesize = get_file_size(patches[i]);
+        FILE *fpr = fopen(patches[i],"rb");
+        for (int j = 0; j < filesize; ++j) {
+            fputc(fgetc(fpr),fpw);
+        }
+        fclose(fpr);
+    }
+
+    //释放
+    for (int i = 0; i < file_num; ++i) {
+        free(patches[i]);
+    }
+    free(patches);
+
+    (*env)->ReleaseStringUTFChars(env,path_pattern_jstr,path_pattern);
+    (*env)->ReleaseStringUTFChars(env,merge_path_jstr,merge_path);
 }
 
 JNIEXPORT jstring JNICALL
