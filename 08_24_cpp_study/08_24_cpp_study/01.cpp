@@ -168,11 +168,103 @@ void main6(){
 	system("pause");
 }
 
+//引用的主要功能:作为函数的参数或返回值
+struct Treacher{
+	char* name;
+	int age;
+};
+
+//引用
+void myprint(Treacher &t){
+	t.age = 21;
+	cout << t.name << "," << t.age << endl;
+}
+
+//指针 (稍微要麻烦一些)
+void myprint2(Treacher *t){
+	t->age = 22;
+	//(*t).age = 22; //和t->age相同
+	cout << t->name << "," << t->age << endl;
+}
+
+void main7(){
+	Treacher t;
+	t.name = "Jason";
+	t.age = 20;
+	myprint(t);
+	//myprint2(&t);
+
+	system("pause");
+}
+
+//二级指针
+void getTreacher(Treacher **p){
+	Treacher *tem = (Treacher *)malloc(sizeof(Treacher));
+	tem->age = 20;
+	*p = tem;
+}
+
+//指针引用，代替二级指针
+void getTreacher2(Treacher* &p){
+	p= (Treacher *)malloc(sizeof(Treacher));
+	p->age = 20;
+}
+
+void main8(){
+	Treacher *t = NULL;
+	//getTreacher(&t);
+	getTreacher2(t);
+	system("pause");
+}
+
+//指针常量与常量指针
+void main9(){
+	//指针常量，指针的常量，不改变地址的指针，但可以修改指向的内容
+	int a = 2, b = 3;
+	int *const p1 = &a;
+	//p1 = &b; //指针常量, 无法改变地址
+	*p1 = 4; //可以这样改变
+
+	//常量指针，指向常量的指针，内容不能修改
+	const int *p2 = &a;
+	p2 = &b; //可以这样改变
+	//*p2 = 9; //常量指针，无法改变内容
+}
+
+//1.单纯给变量取别名没有任何意义，作为函数参数传递，能保证参数传递过程中不产生副本
+//2.引用可以直接操作变量，指针要通过取值(*p)，间接操作变量，指针的可读性差
+
+//常引用
+void myprintf(const int &a){
+	cout << a << endl;
+}
+
+void main10(){
+	//引用必须要有值，不能为空
+	//const int a; 
+	//int &a = NULL;
+
+	//常引用
+	int a = 10, b = 9;
+	const int &c = a;
+
+	//字面量 (常引用的一种写法，用的不多)
+	const int &d = 70;
+
+	myprintf(c);
+
+	system("pause");
+}
+
 void main(){
 	//main1();
 	//main2();
 	//main3();
 	//main4();
 	//main5();
-	main6();
+	//main6();
+	//main7();
+	//main8();
+	//main9();
+	main10();
 }
