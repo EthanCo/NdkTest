@@ -1,6 +1,7 @@
 #include <stdlib.h>
 //#include <stdio.h> C语言输出方式，C++也可以用，但一般不用
 #include <iostream> //标准C++输入输出库 (升级了，.h不需要了)
+#include <stdarg.h> //可变参数
 
 //命名空间 (类似于Java中的包，解决重名问题)
 //标准命名空间(包含很多标准的定义) standard
@@ -240,7 +241,7 @@ void myprintf(const int &a){
 }
 
 void main10(){
-	//引用必须要有值，不能为空
+	//引用必须要有值，不能为空， 而指针是可以为空的(为了防止报错，指针需要进行非空判断)
 	//const int a; 
 	//int &a = NULL;
 
@@ -255,6 +256,87 @@ void main10(){
 
 	system("pause");
 }
+//引用的大小
+void main11(){
+	Treacher t;
+	Treacher &t1 = t;
+	Treacher *p = &t;
+
+	cout << sizeof(t1) << endl; //引用是结构体内所有字段大小的综合 char* 4字节，int 4字节，总共8字节
+	cout << sizeof(p) << endl; //指针是4
+	system("pause");
+}
+
+//函数 默认值
+void myprint(int x ,int y= 10){
+	cout << x <<","<< y << endl;
+}
+
+void main12(){
+	myprint(1);
+	myprint(2,20);
+	system("pause");
+}
+
+//函数 可变参数 (需要引用 #include <stdarg.h>) 
+//单独读取
+void func(int i, ...){
+	cout << i << endl;
+	//可变参数指针
+	va_list args_p;
+	//开始读取可变参数，i是最后一个固定参数
+	va_start(args_p, i);
+
+	int a = va_arg(args_p, int);
+	char b = va_arg(args_p, char);
+	int c = va_arg(args_p, int);
+	cout << a << endl;
+	cout << b << endl;
+	cout << c << endl;
+
+	//结束
+	va_end(args_p);
+}
+
+//函数 可变参数 (需要引用 #include <stdarg.h>) 
+//循环读取
+void func2(int i, ...){
+	cout << i << endl;
+	//可变参数指针
+	va_list args_p;
+	//开始读取可变参数，i是最后一个固定参数
+	va_start(args_p, i);
+
+	int value;
+	while (1)
+	{
+		value = va_arg(args_p, int);
+		if (value<= 0)
+		{
+			break;
+		}
+		cout << value << endl;
+	}
+
+	//结束
+	va_end(args_p);
+}
+
+void main13(){
+	func(9, 1, 'b', 3);
+	func2(9, 1,2, 3);
+	system("pause");
+}
+
+//类
+# include "MyTreacher.h"
+void main14(){
+	MyTreacher t;
+	t.setAge(12);
+	t.setName("Heiko");
+	cout << "name:" << t.getName() << " age:" << t.getAge() << endl;
+	system("pause");
+}
 
 void main(){
 	//main1();
@@ -266,5 +348,9 @@ void main(){
 	//main7();
 	//main8();
 	//main9();
-	main10();
+	//main10();
+	//main11();
+	//main12();
+	//main13();
+	main14();
 }
