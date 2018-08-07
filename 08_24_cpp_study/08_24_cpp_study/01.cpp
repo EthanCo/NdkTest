@@ -328,7 +328,8 @@ void main13(){
 	system("pause");
 }
 
-//类
+//C++ 类 的 普遍写法
+//一般把类的声明写在头文件里面，类的实现写在源文件里面
 # include "MyTreacher.h"
 void main14(){
 	MyTreacher t;
