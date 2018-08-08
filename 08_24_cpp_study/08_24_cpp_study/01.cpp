@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 //#include <stdio.h> C语言输出方式，C++也可以用，但一般不用
 #include <iostream> //标准C++输入输出库 (升级了，.h不需要了)
@@ -339,6 +340,133 @@ void main14(){
 	system("pause");
 }
 
+//构造函数、析构函数、拷贝构造函数
+class Teacher2{
+private :
+	char *name;
+	int age;
+public:
+	//无参构造函数
+	Teacher2(){
+		cout << "无参构造函数" << endl;
+	}
+	//有参构造函数
+	Teacher2(char *name, int age){
+		this->name = name;
+		this->age = age;
+		cout << "有参构造函数" << endl;
+	}
+};
+
+class Teacher3{
+private:
+	char *name;
+	int age;
+public:
+	//赋默认值
+	Teacher3(){
+		this->name = (char*)malloc(100);
+		strcpy(name, "heiko");
+		age = 20;
+		cout << "---无参构造函数---" << endl;
+	}
+	//析构函数
+	//当对象要被系统释放时，析构函数被调用
+	//作用: 善后处理
+	~Teacher3(){
+		cout << "---析构函数---" << endl;
+		//释放内存
+		free(this->name);
+	}
+};
+
+void fun(){
+	Teacher3 t3;
+}
+
+void main15(){
+	Teacher2 t;
+	Teacher2 t2("yuehan", 20);
+	fun();
+
+	system("pause");
+}
+
+//拷贝构造函数
+class Teacher4{
+private:
+	char *name;
+	int age;
+public:
+	//有参构造函数
+	Teacher4(char *name, int age){
+		strcpy(this->name, name);
+		this->age = age;
+		cout << "有参构造函数" << endl;
+	}
+	~Teacher4(){
+		cout << "析构" << endl;
+		//释放内存
+		free(this->name);
+	}
+	//拷贝构造函数 (浅拷贝，拷贝的是地址)
+	//默认拷贝构造函数，就是浅拷贝
+	Teacher4(const Teacher4 &obj){
+		this->name = obj.name;
+		this->age = obj.age;
+		cout << "拷贝构造函数" << endl;
+	}
+	void myprint(){
+		cout << name << "," << age << endl;
+	}
+};
+
+//深拷贝(拷贝的是值，不是地址)
+class Teacher5{
+private:
+	char *name;
+	int age;
+public:
+	//有参构造函数
+	Teacher5(char *name, int age){
+		int len = strlen(name);
+		this->name = (char*)malloc(len + 1); // + 1 结束符
+		strcpy(this->name, name);
+		this->age = age;
+		cout << "有参构造函数" << endl;
+	}
+	~Teacher5(){
+		cout << "析构" << endl;
+		//释放内存
+		free(this->name);
+	}
+	//深拷贝
+	Teacher5(const Teacher5 &obj){
+		//复制name属性
+		int len = strlen(obj.name);
+		this->name = (char*)malloc(len + 1); // + 1 结束符
+		strcpy(this->name, obj.name);
+		this->age = obj.age;
+		cout << "拷贝构造函数" << endl;
+	}
+	void myprint(){
+		cout << name << "," << age << endl;
+	}
+};
+
+void main16(){
+	Teacher4 t("heiko", 20);
+	Teacher4 t2(t);
+	t2.myprint();
+
+	//拷贝构造函数 什么时候会被使用
+	//1.声明时赋值
+	//2.作为参数传入，实参给形参赋值
+	//3.作为函数返回值返回，给变量初始化赋值
+
+	system("pause");
+}
+
 void main(){
 	//main1();
 	//main2();
@@ -353,5 +481,9 @@ void main(){
 	//main11();
 	//main12();
 	//main13();
-	main14();
+	//main14();
+	//main15();
+	main16();
+
+	system("pause");
 }
