@@ -1,5 +1,5 @@
 这个是使用NDK的方式，实现Socket Client和Server端。
-其中SocketEvolveProject是雍敏的UDP发现，生成的so和jar文件在libs下
+其中SocketEvolveProject是雍敏的UDP发现的实现，生成的so和jar文件在libs下
 SocketEvolveTest是对libs文件夹的so和jar文件的使用
 NDKSocketTest是NDK版本的TCP/UDP client和server端的测试
 
