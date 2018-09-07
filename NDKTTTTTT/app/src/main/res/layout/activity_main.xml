@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/normal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="普通"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/luoli"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="萝莉"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/dashu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="大叔"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/jingsong"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="惊悚"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/gaoguai"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="搞怪"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/kongling"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="空灵"
+        android:gravity="center"/>
+
+</LinearLayout>
