@@ -3,6 +3,7 @@
 //#include <stdio.h> C语言输出方式，C++也可以用，但一般不用
 #include <iostream> //标准C++输入输出库 (升级了，.h不需要了)
 #include <stdarg.h> //可变参数
+#include <stdexcpt> //标准异常
 
 using namespace std;
 
