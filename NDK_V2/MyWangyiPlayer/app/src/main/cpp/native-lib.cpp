@@ -111,7 +111,7 @@ Java_com_heiko_mywangyiplayer_Player_native_1start(JNIEnv *env, jobject instance
         int src_linesize = dst_linesize[0];
         for (int i = 0; i < outBuffer.height; ++i) {
             //内存拷贝 来进行渲染
-            memccpy(firstWindown + i * destStride, src_data + i * src_linesize, destStride, i);
+            memcpy(firstWindown + i * destStride, src_data + i * src_linesize, destStride);
         }
 
         ANativeWindow_unlockAndPost(nativeWindow);
