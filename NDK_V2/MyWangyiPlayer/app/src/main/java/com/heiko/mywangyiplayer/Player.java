@@ -42,8 +42,14 @@ public class Player implements SurfaceHolder.Callback {
 
     }
 
-    public void start(String path) {
-        native_start(path,surfaceHolder.getSurface());
+    public void start(final String path) {
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                native_start(path,surfaceHolder.getSurface());
+            }
+        }.start();
     }
 
     public native void native_start(String path, Surface surface);

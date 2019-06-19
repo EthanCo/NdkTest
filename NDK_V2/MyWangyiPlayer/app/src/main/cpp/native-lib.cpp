@@ -52,15 +52,18 @@ Java_com_heiko_mywangyiplayer_Player_native_1start(JNIEnv *env, jobject instance
         }
     }
 
-    //视频流参数
-    AVCodecParameters *codecpar = formatContext->streams[vidio_stream_inx]->codecpar;
-    //解码器 h264
+    //获取视频流
+    AVStream *video_stream = formatContext->streams[vidio_stream_inx];
+    //获取视频流参数
+    AVCodecParameters *codecpar = video_stream->codecpar;
+    //根据编解码上下文中的编码id查找对应的解码器
     AVCodec *dec = avcodec_find_decoder(codecpar->codec_id);
     //2.0 对应 avcodec_alloc_context1
     //4.0 对应 avcodec_alloc_context3
     AVCodecContext *codecContext = avcodec_alloc_context3(dec);
     //将解码器参数 copy到解码器上下文
     avcodec_parameters_to_context(codecContext, codecpar);
+    //初始化AVCodeccontext以使用AVCodec
     avcodec_open2(codecContext, dec, NULL);
     //解码 YUV数据
     //AVPacket
@@ -79,12 +82,16 @@ Java_com_heiko_mywangyiplayer_Player_native_1start(JNIEnv *env, jobject instance
                                      codecContext->width, codecContext->height, AV_PIX_FMT_RGBA,
                                      SWS_BILINEAR, 0, 0,
                                      0);
+    //更改窗口缓冲区的格式和大小。
     ANativeWindow_setBuffersGeometry(nativeWindow, codecContext->width, codecContext->height,
                                      WINDOW_FORMAT_RGBA_8888);
     ANativeWindow_Buffer outBuffer;
     while (av_read_frame(formatContext, packet) >= 0) {
+        //将原始数据包数据作为输入提供给解码器
         avcodec_send_packet(codecContext, packet);
+        //分配一个AVFrame并将其字段设置为默认值。产生的ruct必须使用av帧free来释放
         AVFrame *frame = av_frame_alloc();
+        //从解码器返回解码后的输出数据。
         ret = avcodec_receive_frame(codecContext, frame);
         if (ret == AVERROR(EAGAIN)) {
             continue;
@@ -95,6 +102,7 @@ Java_com_heiko_mywangyiplayer_Player_native_1start(JNIEnv *env, jobject instance
         uint8_t *dst_data[4];
         //每一行的首地址
         int dst_linesize[0];
+        //分配大小为w和h的图像，像素格式为pix fmt，并相应地填充指针和行。必须使用av_ freep (&pointer [a])释放分配的映像缓冲区。
         av_image_alloc(dst_data, dst_linesize, codecContext->width, codecContext->height,
                        AV_PIX_FMT_RGBA, 1);
         //绘制
@@ -117,6 +125,8 @@ Java_com_heiko_mywangyiplayer_Player_native_1start(JNIEnv *env, jobject instance
         ANativeWindow_unlockAndPost(nativeWindow);
         usleep(1000 * 16);
         av_frame_free(&frame);
+
+        env->FindClass("com.heiko.mywangyiplayer.Player");
 
     }
 

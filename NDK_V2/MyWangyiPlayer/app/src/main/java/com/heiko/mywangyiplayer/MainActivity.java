@@ -46,4 +46,8 @@ public class MainActivity extends AppCompatActivity {
         }
         player.start(input);
     }
+
+    public void toast(View view) {
+        Toast.makeText(MainActivity.this, "Click ME!", Toast.LENGTH_SHORT).show();
+    }
 }
